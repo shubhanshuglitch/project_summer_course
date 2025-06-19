@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Video Clone - Content Cards with BG Images</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f171e;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, transparent 100%);
+            padding: 15px 50px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            margin-right: 30px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00a8e1;
+        }
+
+        .right-nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .search-icon, .user-icon {
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 85vh;
+            background: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.9) 100%),
+                url('https://assets.entrepreneur.com/content/3x2/2000/20160720112333-TheLordoftheRings.jpeg') 
+                no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            margin-top: 60px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 4px;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-play {
+            background-color: #00a8e1;
+            color: white;
+        }
+
+        .btn-play:hover {
+            background-color: #008cba;
+        }
+
+        .btn-watchlist {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-watchlist:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Content Rows with Background Images */
+        .content-section {
+            padding: 40px 50px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .view-all {
+            color: #00a8e1;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        .content-row {
+            display: flex;
+            gap: 15px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+            scrollbar-width: none;
+        }
+
+        .content-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Content Cards with Background Images */
+        .content-card {
+            min-width: 250px;
+            height: 375px; /* Fixed height for consistent cards */
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .content-card:hover {
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px 15px 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .content-card:hover .card-overlay {
+            opacity: 1;
+        }
+
+        .card-overlay h3 {
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .card-overlay p {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #0a1016;
+            padding: 50px;
+            margin-top: 30px;
+        }
+
+        .footer-logo {
+            margin-bottom: 30px;
+        }
+
+        .footer-logo img {
+            height: 30px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #aaa;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #00a8e1;
+        }
+
+        .copyright {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid #1a2431;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .hero {
+                padding: 0 20px;
+            }
+            
+            .content-section {
+                padding: 30px 20px;
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                height: 70vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .content-card {
+                min-width: 200px;
+                height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" alt="Prime Video Logo">
+            <nav class="nav-links">
+                <a href="https://www.primevideo.com/storefront">Home</a>
+                <a href="https://www.primevideo.com/movie">Movies</a>
+                <a href="https://www.primevideo.com/tv">TV Shows</a>
+                <a href="https://www.primevideo.com/livetv">Live TV</a>
+            </nav>
+        </div>
+        <div class="right-nav">
+            <div class="search-icon">
+                <nav class="nav-links">
+                    <a href="https://www.primevideo.com/search">Search</a>
+            </div>
+            <div class="user-icon">
+                <nav class ="nav-links">
+                    <a href="https://www.primevideo.com/region/eu/profiles?step=managet">Profile</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The Lord of the Rings: The Rings of Power</h1>
+            <p>This epic drama is set thousands of years before the events of J.R.R. Tolkien's 'The Hobbit' and 'The Lord of the Rings' and follows an ensemble cast of characters.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-play">
+                    <i class="fas fa-play"></i> Play
+                </button>
+                <button class="btn btn-watchlist">
+                    <i class="fas fa-plus"></i> Watchlist
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Rows with Background Images -->
+    <section class="content-section">
+        <div class="section-header">
+            <h2>Popular TV Shows</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="content-row">
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.lX8lxJs_Yv5yPvT6e3MyIgHaFj?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>The Boys</h3>
+                    <p>TV-MA • Action • 2019</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.s1gKjfcvAM5M1O2nw9ulcQHaK-?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>Tom Clancy's Jack Ryan</h3>
+                    <p>TV-MA • Action • 2018</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.ScZkoHe5BsDIN02fdyZUhwHaLH?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>The Wheel of Time</h3>
+                    <p>TV-14 • Fantasy • 2021</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.65PGsI9iruq8nHC48JGCcwHaLH?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>The Marvelous Mrs. Maisel</h3>
+                    <p>TV-MA • Comedy • 2017</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.Aal4QCxiQBpt54Eb2v78awHaJQ?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>Invincible</h3>
+                    <p>TV-MA • Animation • 2021</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.Y8SgO7F0Ey5UaP09xR1BQgHaHZ?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>Reacher</h3>
+                    <p>TV-MA • Action • 2022</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>Recently Added Movies</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="content-row">
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.goly10MJOW1U1zNVEc1FsAHaHa?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>Air</h3>
+                    <p>R • Drama • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/R.00ad17c65437d5c1adf7de71faa42078?rik=hX%2bZkYEWNWSjTQ&riu=http%3a%2f%2fcdn.collider.com%2fwp-content%2fuploads%2f2016%2f02%2fdungeons-dragons-shadowplague.jpg&ehk=hEHioWSicvMtGQnnOdGKfgR3NlljkFrPo923W2zhpYs%3d&risl=&pid=ImgRaw&r=0')">
+                <div class="card-overlay">
+                    <h3>Dungeons & Dragons: Honor Among Thieves</h3>
+                    <p>PG-13 • Adventure • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://www.comingsoon.net/wp-content/uploads/sites/3/2023/01/shazam-fury-of-the-gods-poster-1.jpg?w=665')">
+                <div class="card-overlay">
+                    <h3>Shazam! Fury of the Gods</h3>
+                    <p>PG-13 • Action • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://image.tmdb.org/t/p/original/cvsXj3I9Q2iyyIo95AecSd1tad7.jpg')">
+                <div class="card-overlay">
+                    <h3>Creed III</h3>
+                    <p>PG-13 • Drama • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://cdna.artstation.com/p/assets/images/images/056/531/552/large/rahal-nejraoui-the-batman-movie-ben-affleck.jpg?1669483939')">
+                <div class="card-overlay">
+                    <h3>The Batman</h3>
+                    <p>PG-13 • Action • 2022</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.ObuUWJK5OAYnnZoysGVaEgHaKy?r=0&rs=1&pid=ImgDetMain&cb=idpwebp2&o=7&rm=3')">
+                <div class="card-overlay">
+                    <h3>Top Gun: Maverick</h3>
+                    <p>PG-13 • Action • 2022</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" alt="Prime Video Logo">
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h3>Help</h3>
+                <ul>
+                    <li><a href="https://www.amazon.in/gp/help/customer/display.html?nodeId=G508510">Help Center</a></li>
+                    <li><a href="https://www.amazon.com/gp/help/customer/display.html">Contact Us</a></li>
+                    <li><a href="#">Supported Devices</a></li>
+                    <li><a href="#">Activate Your Device</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Prime Video</h3>
+                <ul>
+                    <li><a href="#">Prime Video Channels</a></li>
+                    <li><a href="#">Redeem a Gift Card</a></li>
+                    <li><a href="#">Watch Anywhere</a></li>
+                    <li><a href="https://www.primevideo.com/region/eu/help/ref=atv_ftr_ter?nodeId=202064890">Program Terms</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Account & Settings</h3>
+                <ul>
+                    <li><a href="https://www.primevideo.com/profiles?step=manage">Your Account</a></li>
+                    <li><a href="https://www.primevideo.com/mystuff/watchlist">Your Watchlist</a></li>
+                    <li><a href="https://www.primevideo.com/mystuff">Your Recommendations</a></li>
+                    <li><a href="https://www.primevideo.com/region/eu/storefront/kids?ref_=atv_pr_sw_sc">Parental Controls</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Other</h3>
+                <ul>
+                    <li><a href="https://www.amazon.in/s?k=amazon+prime">Amazon Prime</a></li>
+                    <li><a href="https://www.amazon.in/business/register/org/landing?&ref_=octosbng_BREXT008Dpx&ef_id=:G:s&s_kwcid=AL!9012!3!!e!!o!!Amazon%20Business!392311723!1266638019105110&msclkid=c2e328a42d8713bd6ab240f07a11435a">Amazon Business</a></li>
+                    <li><a href="#">Shop with Points</a></li>
+                    <li><a href="#">Reload Your Balance</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 1996-2025, Amazon.com, Inc. or its affiliates. Amazon and all related marks are trademarks of Amazon.com, Inc. or its affiliates.</p>
+        </div>
+    </footer>
+</body>
+</html>
