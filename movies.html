@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Video | Movies</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Amazon Ember', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #0f171e;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        /* Header Styles */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .logo img {
+            height: 24px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            font-size: 16px;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-links a.active {
+            font-weight: bold;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00a8e1;
+        }
+
+        .right-nav {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .search-icon, .user-icon {
+            font-size: 18px;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.8)), 
+                        url('https://tse4.mm.bing.net/th/id/OIP.GlGK5YY9aTeSiffKu_kPbQHaD4?r=0&rs=1&pid=ImgDetMain&o=7&rm=3');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            margin-top: 64px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 4px;
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-play {
+            background: #00a8e1;
+            color: #fff;
+        }
+
+        .btn-play:hover {
+            background: #0090c5;
+        }
+
+        .btn-watchlist {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .btn-watchlist:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            padding: 30px 60px;
+            background: #192734;
+        }
+
+        .filter-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filter-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 15px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: #00a8e1;
+            border-color: #00a8e1;
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 40px 60px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .view-all {
+            color: #00a8e1;
+            font-size: 16px;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        .content-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .content-card {
+            height: 300px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            transform: scale(1.05);
+        }
+
+        .card-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            padding: 20px 15px;
+        }
+
+        .card-overlay h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .card-overlay p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            background: #0a1017;
+            padding: 50px 60px 20px;
+            margin-top: 30px;
+        }
+
+        .footer-logo img {
+            height: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00a8e1;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .footer-column ul li a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            font-size: 12px;
+            opacity: 0.6;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .content-row {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .content-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-links {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-content h1 {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                gap: 15px;
+            }
+            
+            .hero {
+                padding: 0 30px;
+                height: 70vh;
+            }
+            
+            .filter-container, .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .content-section, .filter-section {
+                padding: 30px;
+            }
+            
+            .content-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-content h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                height: 60vh;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .content-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .footer-links {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" alt="Prime Video Logo">
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="movies.html" class="active">Movies</a>
+                <a href="tv.html">TV Shows</a>
+                <a href="livetv.html">Live TV</a>
+            </nav>
+        </div>
+        <div class="right-nav">
+            <div class="search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <div class="user-icon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Dune: Part Two</h1>
+            <p>Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the universe, he must prevent a terrible future only he can foresee.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-play">
+                    <i class="fas fa-play"></i> Watch Now
+                </button>
+                <button class="btn btn-watchlist">
+                    <i class="fas fa-plus"></i> Add to Watchlist
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <h2 class="filter-title">Browse Movies</h2>
+            <div class="filter-options">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Action</button>
+                <button class="filter-btn">Comedy</button>
+                <button class="filter-btn">Drama</button>
+                <button class="filter-btn">Sci-Fi</button>
+                <button class="filter-btn">Horror</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Rows -->
+    <section class="content-section">
+        <div class="section-header">
+            <h2>New Releases</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="content-row">
+            <div class="content-card" style="background-image: url('https://sm.ign.com/ign_es/photo/d/dune-part-/dune-part-two-exclusive-new-poster-features-its-stellar-cast_aynf.jpg')">
+                <div class="card-overlay">
+                    <h3>Dune: Part Two</h3>
+                    <p>PG-13 • Sci-Fi • 2024</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.ObuUWJK5OAYnnZoysGVaEgHaKy?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Top Gun: Maverick</h3>
+                    <p>PG-13 • Action • 2022</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.goly10MJOW1U1zNVEc1FsAHaHa?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Air</h3>
+                    <p>R • Drama • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.65PGsI9iruq8nHC48JGCcwHaLH?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>The Marvelous Mrs. Maisel</h3>
+                    <p>TV-MA • Comedy • 2017</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/R.00ad17c65437d5c1adf7de71faa42078?rik=hX%2bZkYEWNWSjTQ&riu=http%3a%2f%2fcdn.collider.com%2fwp-content%2fuploads%2f2016%2f02%2fdungeons-dragons-shadowplague.jpg&ehk=hEHioWSicvMtGQnnOdGKfgR3NlljkFrPo923W2zhpYs%3d&risl=&pid=ImgRaw&r=0')">
+                <div class="card-overlay">
+                    <h3>Dungeons & Dragons: Honor Among Thieves</h3>
+                    <p>PG-13 • Adventure • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://www.comingsoon.net/wp-content/uploads/sites/3/2023/01/shazam-fury-of-the-gods-poster-1.jpg?w=665')">
+                <div class="card-overlay">
+                    <h3>Shazam! Fury of the Gods</h3>
+                    <p>PG-13 • Action • 2023</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>Action & Adventure</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="content-row">
+            <div class="content-card" style="background-image: url('https://sm.ign.com/ign_es/photo/d/dune-part-/dune-part-two-exclusive-new-poster-features-its-stellar-cast_aynf.jpg')">
+                <div class="card-overlay">
+                    <h3>Dune: Part Two</h3>
+                    <p>PG-13 • Sci-Fi • 2024</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.ObuUWJK5OAYnnZoysGVaEgHaKy?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Top Gun: Maverick</h3>
+                    <p>PG-13 • Action • 2022</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/R.00ad17c65437d5c1adf7de71faa42078?rik=hX%2bZkYEWNWSjTQ&riu=http%3a%2f%2fcdn.collider.com%2fwp-content%2fuploads%2f2016%2f02%2fdungeons-dragons-shadowplague.jpg&ehk=hEHioWSicvMtGQnnOdGKfgR3NlljkFrPo923W2zhpYs%3d&risl=&pid=ImgRaw&r=0')">
+                <div class="card-overlay">
+                    <h3>Dungeons & Dragons: Honor Among Thieves</h3>
+                    <p>PG-13 • Adventure • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.Y8SgO7F0Ey5UaP09xR1BQgHaHZ?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Reacher</h3>
+                    <p>TV-MA • Action • 2022</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://www.comingsoon.net/wp-content/uploads/sites/3/2023/01/shazam-fury-of-the-gods-poster-1.jpg?w=665')">
+                <div class="card-overlay">
+                    <h3>Shazam! Fury of the Gods</h3>
+                    <p>PG-13 • Action • 2023</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://cdna.artstation.com/p/assets/images/images/056/531/552/large/rahal-nejraoui-the-batman-movie-ben-affleck.jpg?1669483939')">
+                <div class="card-overlay">
+                    <h3>The Batman</h3>
+                    <p>PG-13 • Action • 2022</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section">
+        <div class="section-header">
+            <h2>Prime Exclusives</h2>
+            <a href="#" class="view-all">View All</a>
+        </div>
+        <div class="content-row">
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.lX8lxJs_Yv5yPvT6e3MyIgHaFj?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>The Boys</h3>
+                    <p>TV-MA • Action • 2019</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.Aal4QCxiQBpt54Eb2v78awHaJQ?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Invincible</h3>
+                    <p>TV-MA • Animation • 2021</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.s1gKjfcvAM5M1O2nw9ulcQHaK-?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Tom Clancy's Jack Ryan</h3>
+                    <p>TV-MA • Action • 2018</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.ScZkoHe5BsDIN02fdyZUhwHaLH?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>The Wheel of Time</h3>
+                    <p>TV-14 • Fantasy • 2021</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.65PGsI9iruq8nHC48JGCcwHaLH?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>The Marvelous Mrs. Maisel</h3>
+                    <p>TV-MA • Comedy • 2017</p>
+                </div>
+            </div>
+            <div class="content-card" style="background-image: url('https://th.bing.com/th/id/OIP.Y8SgO7F0Ey5UaP09xR1BQgHaHZ?rs=1&pid=ImgDetMain')">
+                <div class="card-overlay">
+                    <h3>Reacher</h3>
+                    <p>TV-MA • Action • 2022</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg" alt="Prime Video Logo">
+        </div>
+        <div class="footer-links">
+            <div class="footer-column">
+                <h3>Help</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Supported Devices</a></li>
+                    <li><a href="#">Activate Your Device</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Prime Video</h3>
+                <ul>
+                    <li><a href="#">Prime Video Channels</a></li>
+                    <li><a href="#">Redeem a Gift Card</a></li>
+                    <li><a href="#">Watch Anywhere</a></li>
+                    <li><a href="#">Program Terms</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Account & Settings</h3>
+                <ul>
+                    <li><a href="#">Your Account</a></li>
+                    <li><a href="#">Your Watchlist</a></li>
+                    <li><a href="#">Your Recommendations</a></li>
+                    <li><a href="#">Parental Controls</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Other</h3>
+                <ul>
+                    <li><a href="#">Amazon Prime</a></li>
+                    <li><a href="#">Amazon Business</a></li>
+                    <li><a href="#">Shop with Points</a></li>
+                    <li><a href="#">Reload Your Balance</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 1996-2025, Amazon.com, Inc. or its affiliates. Amazon and all related marks are trademarks of Amazon.com, Inc. or its affiliates.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Simple filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // In a real implementation, this would filter the content
+                // For now, we'll just show a message
+                const category = this.textContent;
+                alert(`Filtering by: ${category}`);
+            });
+        });
+        
+        // Card hover effect enhancement
+        document.querySelectorAll('.content-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.querySelector('.card-overlay').style.background = 'linear-gradient(transparent, rgba(0, 0, 0, 0.9))';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.querySelector('.card-overlay').style.background = 'linear-gradient(transparent, rgba(0, 0, 0, 0.8))';
+            });
+        });
+    </script>
+</body>
+</html>
