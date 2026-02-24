@@ -1,0 +1,61 @@
+.featured-banner {
+    position: relative;
+    width: 100%;
+    height: 65vh;
+    min-height: 400px;
+    margin-top: 64px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 4% 60px;
+    overflow: hidden;
+}
+
+.banner-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.banner-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--pv-bg) 0%, transparent 50%),
+        linear-gradient(to right, rgba(15, 23, 30, 0.85) 0%, transparent 60%);
+}
+
+.featured-info {
+    position: relative;
+    z-index: 2;
+    max-width: 550px;
+}
+
+.live-badge-hero {
+    background: var(--pv-live-red);
+    color: var(--pv-white);
+}
+
+.live-dot-big {
+    width: 8px;
+    height: 8px;
+    background: var(--pv-white);
+    border-radius: 50%;
+    display: inline-block;
+    animation: livePulse 1.5s ease-in-out infinite;
+}
+
+@media (max-width: 992px) {
+    .featured-banner {
+        height: 60vh;
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 768px) {
+    .featured-banner {
+        margin-top: 56px;
+        height: 55vh;
+        min-height: 320px;
+    }
+}
